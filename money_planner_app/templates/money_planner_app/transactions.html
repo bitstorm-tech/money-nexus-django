@@ -4,9 +4,17 @@
         <h1>Add Transactions here...</h1>
         <form>
             <div class="form-row">
-                <div class="form-group col-6">
+                <div class="form-group col-3">
                     <label for="amount">Amount</label>
                     <input type="number" step=".01" class="form-control" id="amount" name="amount">
+                </div>
+                <div class="form-group col-3">
+                    <label for="tag">Tag</label>
+                    <select class="form-control" id="tag" name="tag">
+                        {% for tag in tags %}
+                            <option>{{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="form-group col-3">
                     <label for="date">Date</label>

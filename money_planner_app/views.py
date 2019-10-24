@@ -7,7 +7,8 @@ from money_planner_app.models import Tag
 
 
 def transactions(request: HttpRequest):
-    context = {"now": datetime.date.today().strftime("%Y-%m-%d")}
+    all_tags = Tag.objects.all()
+    context = {"now": datetime.date.today().strftime("%Y-%m-%d"), "tags": all_tags}
 
     return render(request, "money_planner_app/transactions.html", context)
 
