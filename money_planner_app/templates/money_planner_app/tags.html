@@ -1,0 +1,25 @@
+{% extends "money_planner_app/base.html" %}
+{% block content %}
+    <div class="container">
+        <h1>New Tag</h1>
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+                <small>Optional</small>
+            </div>
+            <button class="btn btn-primary" type="submit">Add</button>
+        </form>
+        <br>
+        <h2>Available Tags</h2>
+        <ul>
+            {% for tag in tags %}
+                <li>{{ tag }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+
 from money_planner_app import views
 
-urlpatterns = [path("admin/", admin.site.urls), path("", views.index, name="index")]
+urlpatterns = [path("admin/", admin.site.urls), path("transactions/", views.transactions, name="transactions"),
+               path("tags/", views.tags, name="tags")]
