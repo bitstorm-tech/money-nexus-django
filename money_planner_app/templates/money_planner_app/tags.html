@@ -6,11 +6,11 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <input type="text" class="form-control" id="name" name="name" value="{{ name }}">
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+                <textarea name="description" id="description" class="form-control" rows="5">{{ description }}</textarea>
                 <small>Optional</small>
             </div>
             <button class="btn btn-primary" type="submit">Save</button>
@@ -20,10 +20,7 @@
         <ul>
             {% for tag in tags %}
                 <li>
-                    {{ tag.name }}
-                    {% if tag.description %}
-                        - {{ tag.description }}
-                    {% endif %}
+                    <a href="?name={{ tag.name }}&description={{ tag.description }}">{{ tag.name }}</a>
                 </li>
             {% endfor %}
         </ul>
