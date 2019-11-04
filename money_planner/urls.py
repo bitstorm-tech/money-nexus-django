@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from money_planner_app import views
+import money_planner_app.views as views
 
 urlpatterns = [
     path("admin/", admin.site.urls),

@@ -1,20 +1,11 @@
-import datetime
-
 from django.http import HttpRequest
 from django.shortcuts import render
 
-from money_planner_app.models import Tag
-
-
-def transactions(request: HttpRequest):
-    all_tags = Tag.objects.all()
-    context = {"now": datetime.date.today().strftime("%Y-%m-%d"), "tags": all_tags}
-
-    return render(request, "money_planner_app/transactions.html", context)
+from money_planner_app.models.tag import Tag
 
 
 def tags(request: HttpRequest):
-    all_tags = Tag.objects.all()
+    all_tags = Tag.objects.all().order_by("name")
     context = {"tags": all_tags}
 
     if request.method == "POST":
@@ -27,7 +18,3 @@ def tags(request: HttpRequest):
         context["description"] = request.GET.get("description", "")
 
     return render(request, "money_planner_app/tags.html", context)
-
-
-def home(request: HttpRequest):
-    return render(request, "money_planner_app/base.html")

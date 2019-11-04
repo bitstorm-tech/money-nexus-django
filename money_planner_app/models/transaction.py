@@ -7,8 +7,3 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(null=True)
     tags = models.ManyToManyField("Tag")
-
-
-class Tag(models.Model):
-    name = models.TextField(unique=True)
-    description = models.TextField(null=True)
