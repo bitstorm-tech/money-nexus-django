@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-import money_planner_app.views as views
+from money_planner_app.views import transactions, tags, home
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("transactions/", views.transactions, name="transactions"),
-    path("tags/", views.tags, name="tags"),
-    path("", views.home, name="home"),
+    path("transactions/", transactions, name="transactions"),
+    path("tags/", tags, name="tags"),
+    path("", home, name="home"),
 ]
