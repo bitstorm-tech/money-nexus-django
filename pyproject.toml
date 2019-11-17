@@ -5,7 +5,7 @@ description = ""
 authors = ["Josef Bauer <bauerjoe@gmx.de>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 django = "^2.2"
 pillow = "^6.2"
 psycopg2-binary = "^2.8"
