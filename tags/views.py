@@ -1,7 +1,7 @@
 from django.http import HttpRequest
 from django.shortcuts import render
 
-from money_planner.models import Tag
+from tags.models import Tag
 
 
 def tags(request: HttpRequest):
@@ -17,4 +17,4 @@ def tags(request: HttpRequest):
         context["name"] = request.GET.get("name", "")
         context["description"] = request.GET.get("description", "")
 
-    return render(request, "money_planner/tags.html", context)
+    return render(request, "tags/tags.html", context)

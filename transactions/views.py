@@ -3,8 +3,8 @@ import datetime
 from django.http import HttpRequest
 from django.shortcuts import render
 
-from money_planner.models.tag import Tag
-from money_planner.models.transaction import Transaction
+from tags.models import Tag
+from transactions.models import Transaction
 
 
 def transactions(request: HttpRequest):
@@ -12,4 +12,4 @@ def transactions(request: HttpRequest):
     all_transactions = Transaction.objects.all()
     context = {"now": datetime.date.today().strftime("%Y-%m-%d"), "tags": all_tags}
 
-    return render(request, "money_planner/transactions.html", context)
+    return render(request, "transactions/transactions.html", context)

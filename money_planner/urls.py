@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from money_planner.views import transactions, tags, home
+from money_planner.views import home
+from tags.views import tags
+from transactions.views import transactions
 
 urlpatterns = [
     path("admin/", admin.site.urls),
