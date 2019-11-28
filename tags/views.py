@@ -6,7 +6,7 @@ from tags.models import Tag
 
 def tags(request: HttpRequest):
     all_tags = Tag.objects.all().order_by("name")
-    context = {"tags": all_tags}
+    context = {"tags": all_tags, "active": "tags"}
 
     if request.method == "POST":
         name = request.POST.get("name")
