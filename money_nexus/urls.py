@@ -1,4 +1,4 @@
-"""money_planner URL Configuration
+"""money_nexus URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from money_planner.views import home
+from money_nexus.views import home
 from tags.views import tags
 from transactions.views import transactions
 
