@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from categories.views import categories
 from money_nexus.views import home
 from tags.views import tags
 from transactions.views import transactions
@@ -24,5 +25,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("transactions/", transactions, name="transactions"),
     path("tags/", tags, name="tags"),
+    path("categories/", categories, name="categories"),
     path("", home, name="home"),
 ]
