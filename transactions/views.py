@@ -1,5 +1,3 @@
-import datetime
-
 from django.http import HttpRequest
 from django.shortcuts import render
 
@@ -9,10 +7,15 @@ from transactions.models import Transaction
 
 
 def transactions(request: HttpRequest):
-    all_tags = Tag.objects.all().order_by("name")
+    tags = Tag.objects.all().order_by("name")
     all_transactions = Transaction.objects.all()
     categories = Category.objects.all().order_by("name")
-    context = {"now": datetime.date.today().strftime("%Y-%m-%d"), "tags": all_tags, "active": "transactions",
-               "categories": categories}
+    selected_category_id = 0 if len(categories) == 0 else categories[0].id
+    context = {
+        "tags": list(tags.values()),
+        "categories": list(categories.values()),
+        "active": "transactions",
+        "selected_category_id": selected_category_id,
+    }
 
     return render(request, "transactions/transactions.html", context)
