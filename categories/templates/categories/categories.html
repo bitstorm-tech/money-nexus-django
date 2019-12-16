@@ -2,34 +2,29 @@
 {% block content %}
     <h1>Categories</h1>
     <hr>
-    <div class="row">
-        <div class="col-2" style="background-color: red">
-            Left
+    <div class="row" id="categories">
+        <div class="col-2">
+            <button class="btn btn-primary btn-sm btn-block mb-1" data-toggle="modal" data-target="#new-category-dialog">
+                New
+            </button>
+            <ul class="list-group">
+                <li v-for="category in categories" class="list-group-item">[[ category.name ]]</li>
+            </ul>
         </div>
-        <div class="col-10" style="background-color: blue">
+        <div class="col-10">
             Right
         </div>
     </div>
-    {#    <form method="post" id="app">#}
-    {#        {% csrf_token %}#}
-    {#        <div class="form-group">#}
-    {#            <label for="name">Name</label>#}
-    {#            <input type="text" class="form-control" id="name" name="name" value="{{ name }}">#}
-    {#        </div>#}
-    {#        <div class="form-group">#}
-    {#            <div class="custom-control custom-checkbox">#}
-    {#                <input type="checkbox" class="custom-control-input" id="descriptionYesNo">#}
-    {#                <label class="custom-control-label" for="descriptionYesNo">Description <small>(optional)</small></label>#}
-    {#            </div>#}
-    {#            <textarea v-if="showDescription()" name="description" id="description" class="form-control"#}
-    {#                      rows="5">{{ description }}</textarea>#}
-    {#        </div>#}
-    {#        <button class="btn btn-primary" type="submit">Save</button>#}
-    {#    </form>#}
+
+    {% include "categories/new-category-dialog.html" %}
+
     <script>
         new Vue({
             delimiters: ["[[", "]]"],
-            el: "#app",
+            el: "#categories",
+            data: {
+                categories: {{ categories | safe }}
+            },
             methods: {
                 showDescription: function () {
                     return false;

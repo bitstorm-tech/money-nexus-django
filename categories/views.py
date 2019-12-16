@@ -6,8 +6,12 @@ from categories.models import Category
 
 def categories(request: HttpRequest):
     context = {"active": "categories"}
+
     if request.method == "POST":
         save_category(request.POST)
+    else:
+        all_categories = list(Category.objects.order_by("name").values())
+        context["categories"] = all_categories
 
     return render(request, "categories/categories.html", context)
 
