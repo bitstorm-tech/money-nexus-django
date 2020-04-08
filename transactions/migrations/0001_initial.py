@@ -8,10 +8,7 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ("tags", "0001_initial"),
-        ("categories", "0001_initial"),
-    ]
+    dependencies = [("tags", "0001_initial"), ("categories", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
@@ -41,5 +38,5 @@ class Migration(migrations.Migration):
                 ),
                 ("tags", models.ManyToManyField(to="tags.Tag")),
             ],
-        ),
+        )
     ]

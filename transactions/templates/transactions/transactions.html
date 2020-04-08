@@ -1,7 +1,8 @@
 {% extends "money_nexus/base.html" %}
 {% block content %}
     <h1>Add Transactions here...</h1>
-    <form id="transaction">
+    <form id="transaction" method="post">
+        {% csrf_token %}
         <div class="form-row">
             <div class="form-group col-4">
                 <label for="category">Category</label>
