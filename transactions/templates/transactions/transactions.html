@@ -40,6 +40,34 @@
         </div>
         <button class="btn btn-primary" type="submit">Add</button>
     </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Category</th>
+            <th scope="col">Note</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in all_transactions %}
+            <tr>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.category.name }}</td>
+                <td>{{ transaction.note }}</td>
+                <td>
+                    <form action="{% url 'transactions_delete' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ transaction.id }}"/>
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     <script>
         new Vue({
             el: "#transaction",

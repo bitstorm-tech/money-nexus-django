@@ -20,6 +20,7 @@ class Transaction(models.Model):
         transaction.date = post_data["date"]
         transaction.time = post_data["time"]
         transaction.amount = post_data["amount"]
+        transaction.note = post_data["note"]
 
         category_id = post_data["category"]
         transaction.category = Category.objects.get(id=category_id)
