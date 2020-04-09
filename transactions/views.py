@@ -31,6 +31,7 @@ class TransactionView(View):
         return redirect("/transactions")
 
 
-def delete_transaction(request: HttpRequest, transaction_id: int):
+def delete_transaction(request: HttpRequest):
+    transaction_id = request.POST["id"]
     Transaction.objects.get(id=transaction_id).delete()
-    return redirect("/categories")
+    return redirect("/transactions")

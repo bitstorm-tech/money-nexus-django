@@ -1,10 +1,13 @@
 {% extends "money_nexus/base.html" %}
 {% block content %}
     <div class="row">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog">New Transaction</button>
-        {% include "transactions/transaction-dialog.html" %}
+        <div class="col-12">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog">New Transaction
+            </button>
+            {% include "transactions/transaction-dialog.html" %}
+        </div>
     </div>
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-12">
             <table class="table table-dark table-hover">
                 <thead>
@@ -25,8 +28,11 @@
                         <td>{{ transaction.note }}</td>
                         <td>
                             <button class="btn btn-outline-danger fas fa-edit"></button>
-                            <button class="btn btn-outline-danger fas fa-trash"
-                                    onclick="deleteTransaction({{ transaction.id }})"></button>
+                            <form action="{% url 'transactions_delete' %}" method="post">
+                                {% csrf_token %}
+                                <input hidden name="id" value="{{ transaction.id }}">
+                                <button class="btn btn-outline-danger fas fa-trash" type="submit"></button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}
@@ -34,12 +40,9 @@
             </table>
         </div>
     </div>
-    <script>
-        function deleteTransaction(id) {
-            const request = new XMLHttpRequest();
-            request.open("POST", "delete/" + id);
-            request.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-            request.send();
+    <style>
+        td > form {
+            display: inline;
         }
-    </script>
+    </style>
 {% endblock %}
