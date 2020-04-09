@@ -27,6 +27,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav m-auto">
             <div class="btn-group" role="group" aria-label="Basic example">
+                <a class="btn {% if active == "dashboard" %}btn-primary{% else %}btn-secondary{% endif %}"
+                   href="#">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
                 <a class="btn {% if active == "transactions" %}btn-primary{% else %}btn-secondary{% endif %}"
                    href="{% url "transactions" %}">
                     <i class="fas fa-exchange-alt"></i> Transactions
@@ -39,7 +43,8 @@
                    href="{% url "tags" %}">
                     <i class="fas fa-tags"></i> Tags
                 </a>
-                <a class="btn {% if active == "statistics" %}btn-primary{% else %}btn-secondary{% endif %}">
+                <a class="btn {% if active == "statistics" %}btn-primary{% else %}btn-secondary{% endif %}"
+                   href="#">
                     <i class="fas fa-chart-pie"></i> Statistics
                 </a>
             </div>
