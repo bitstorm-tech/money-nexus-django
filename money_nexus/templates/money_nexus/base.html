@@ -29,18 +29,18 @@
             <div class="btn-group" role="group" aria-label="Basic example">
                 <a class="btn {% if active == "transactions" %}btn-primary{% else %}btn-secondary{% endif %}"
                    href="{% url "transactions" %}">
-                    Transactions
+                    <i class="fas fa-exchange-alt"></i> Transactions
                 </a>
                 <a class="btn {% if active == "categories" %}btn-primary{% else %}btn-secondary{% endif %}"
                    href="{% url "categories" %}">
-                    Categories
+                    <i class="fas fa-list"></i> Categories
                 </a>
                 <a class="btn {% if active == "tags" %}btn-primary{% else %}btn-secondary{% endif %}"
                    href="{% url "tags" %}">
-                    Tags
+                    <i class="fas fa-tags"></i> Tags
                 </a>
                 <a class="btn {% if active == "statistics" %}btn-primary{% else %}btn-secondary{% endif %}">
-                    Statistics
+                    <i class="fas fa-chart-pie"></i> Statistics
                 </a>
             </div>
         </ul>
