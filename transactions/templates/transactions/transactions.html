@@ -6,6 +6,7 @@
                 <div class="modal-content">
                     <form action="{% url 'transactions' %}" method="post">
                         {% csrf_token %}
+                        <input type="hidden" name="id" :value="transactionInDialog.id">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">New Transaction</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -16,16 +17,18 @@
                             <div class="form-row">
                                 <div class="form-group col-4">
                                     <label for="amount">Amount</label>
-                                    <input type="number" step=".01" class="form-control" id="amount" name="amount">
+                                    <input type="number" step=".01" class="form-control" id="amount" name="amount"
+                                           :value="transactionInDialog.amount">
                                 </div>
                                 <div class="form-group col-5">
                                     <label for="date">Date</label>
                                     <input type="date" class="form-control" id="date" name="date"
-                                           value="{% now 'Y-m-d' %}">
+                                           :value="transactionInDialog.date">
                                 </div>
                                 <div class="form-group col-3">
                                     <label for="time">Time</label>
-                                    <input type="time" class="form-control" id="time" name="time" value="14:00">
+                                    <input type="time" class="form-control" id="time" name="time"
+                                           :value="transactionInDialog.time">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -40,7 +43,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="note">Note <small>(optional)</small></label>
-                                <input type="text" class="form-control" id="note" name="note">
+                                <input type="text" class="form-control" id="note" name="note"
+                                       :value="transactionInDialog.note">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -53,7 +57,9 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog">New Transaction
+                <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog"
+                        @click="setNewTransactionInDialog()">
+                    New Transaction
                 </button>
             </div>
         </div>
@@ -72,16 +78,23 @@
                     <tbody>
                     {% for transaction in all_transactions %}
                         <tr>
-                            <td>{{ transaction.date }}</td>
+                            <td>{{ transaction.date | date:'d.m.Y' }} - {{ transaction.time | date:'H:i' }}</td>
                             <td>{{ transaction.amount }}</td>
                             <td>{{ transaction.category.name }}</td>
                             <td>{{ transaction.note }}</td>
                             <td>
-                                <button class="btn btn-outline-danger fas fa-edit"></button>
+                                <a class="fas fa-edit mr-2" href="#" data-toggle="modal"
+                                        data-target="#transaction-dialog"
+                                        @click="setTransactionInDialog({{ transaction.id }},
+                                                                           {{ transaction.amount }},
+                                                                           '{{ transaction.date | date:'Y-m-d' }}',
+                                                                           '{{ transaction.time | date:'H:i' }}',
+                                                                           '{{ transaction.note }}')">
+                                </a>
                                 <form action="{% url 'transactions_delete' %}" method="post">
                                     {% csrf_token %}
                                     <input hidden name="id" value="{{ transaction.id }}">
-                                    <button class="btn btn-outline-danger fas fa-trash" type="submit"></button>
+                                    <a class="fas fa-trash" href="#" type="submit"></a>
                                 </form>
                             </td>
                         </tr>
@@ -92,15 +105,24 @@
         </div>
     </div>
     <script>
-        const app = new Vue({
+        new Vue({
             el: "#transactions",
             delimiters: ["[[", "]]"],
             data: {
-                showDialog: false
+                transactionInDialog: {}
             },
             methods: {
-                showDescription: function () {
-                    return false;
+                setTransactionInDialog: function (id, amount, date, time, note) {
+                    this.transactionInDialog = {id, amount, date, time, note};
+                },
+                setNewTransactionInDialog: function () {
+                    this.transactionInDialog = {
+                        id: -1,
+                        amount: 1,
+                        date: new Date().toISOString().substring(0, 10),
+                        time: new Date().toISOString().substring(11, 16),
+                        note: ""
+                    }
                 }
             }
         });

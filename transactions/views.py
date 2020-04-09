@@ -27,7 +27,12 @@ class TransactionView(View):
     def post(self, request: HttpRequest):
         post_data = request.POST
         transaction = Transaction.from_post_data(post_data)
-        transaction.save()
+        if transaction.id >= 0:
+            Transaction.objects.filter(id=transaction.id).update(amount=transaction.amount, date=transaction.date,
+                                                                 time=transaction.time, note=transaction.note,
+                                                                 category=transaction.category)
+        else:
+            transaction.save()
         return redirect("/transactions")
 
 

@@ -17,6 +17,7 @@ class Transaction(models.Model):
     @staticmethod
     def from_post_data(post_data) -> "Transaction":
         transaction = Transaction()
+        transaction.id = int(post_data["id"])
         transaction.date = post_data["date"]
         transaction.time = post_data["time"]
         transaction.amount = post_data["amount"]
