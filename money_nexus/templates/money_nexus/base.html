@@ -20,27 +20,38 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
     <a class="navbar-brand" href="{% url "home" %}">
-        <img src="{% static 'images/logo.png' %}" height="32" width="32" alt="Oops">
+        <img src="{% static 'images/logo.png' %}" height="42" width="42" alt="Oops"> Money Nexus
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav m-auto">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a class="btn {% if active == "transactions" %}btn-primary{% else %}btn-secondary{% endif %}"
+                   href="{% url "transactions" %}">
+                    Transactions
+                </a>
+                <a class="btn {% if active == "categories" %}btn-primary{% else %}btn-secondary{% endif %}"
+                   href="{% url "categories" %}">
+                    Categories
+                </a>
+                <a class="btn {% if active == "tags" %}btn-primary{% else %}btn-secondary{% endif %}"
+                   href="{% url "tags" %}">
+                    Tags
+                </a>
+                <a class="btn {% if active == "statistics" %}btn-primary{% else %}btn-secondary{% endif %}">
+                    Statistics
+                </a>
+            </div>
+        </ul>
+    </div>
+    <a class="navbar-brand" href="{% url "home" %}">
+        Money Nexus <img src="{% static 'images/logo.png' %}" height="42" width="42" alt="Oops">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% if active == "tags" %}active{% endif %}">
-                <a class="nav-link" href="{% url "tags" %}">Tags</a>
-            </li>
-            <li class="nav-item {% if active == "categories" %}active{% endif %}">
-                <a class="nav-link" href="{% url "categories" %}">Categories</a>
-            </li>
-            <li class="nav-item {% if active == "transactions" %}active{% endif %}">
-                <a class="nav-link" href="{% url "transactions" %}">Transactions</a>
-            </li>
-        </ul>
-    </div>
 </nav>
 <div class="container pt-3">
     {% block content %}
