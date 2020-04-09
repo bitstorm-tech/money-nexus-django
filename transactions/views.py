@@ -9,7 +9,6 @@ from transactions.models import Transaction
 
 class TransactionView(View):
     template_name = "transactions/transactions.html"
-    name = "transactions"
 
     def get(self, request: HttpRequest):
         tags = Tag.objects.all().order_by("name")
@@ -29,13 +28,9 @@ class TransactionView(View):
         post_data = request.POST
         transaction = Transaction.from_post_data(post_data)
         transaction.save()
-        return redirect(self.name)
+        return redirect("/transactions")
 
 
-class TransactionDeleteView(View):
-    name = "transactions_delete"
-
-    def post(self, request: HttpRequest):
-        transaction_id = request.POST["id"]
-        Transaction.objects.get(id=transaction_id).delete()
-        return redirect(TransactionView.name)
+def delete_transaction(request: HttpRequest, transaction_id: int):
+    Transaction.objects.get(id=transaction_id).delete()
+    return redirect("/categories")

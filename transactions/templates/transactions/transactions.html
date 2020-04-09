@@ -1,45 +1,5 @@
 {% extends "money_nexus/base.html" %}
 {% block content %}
-    {#    <h1>Add Transactions here...</h1>#}
-    {#    <form id="transaction" method="post">#}
-    {#        {% csrf_token %}#}
-    {#        <div class="form-row">#}
-    {#            <div class="form-group col-4">#}
-    {#                <label for="category">Category</label>#}
-    {#                <select id="category" class="form-control" name="category" v-model="selectedCategoryId">#}
-    {#                    <option v-for="category in categories" :value="category.id">#}
-    {#                        [[ category.name ]]#}
-    {#                    </option>#}
-    {#                </select>#}
-    {#            </div>#}
-    {#            <div class="form-group col-4">#}
-    {#                <label for="amount">Amount</label>#}
-    {#                <input type="number" step=".01" class="form-control" id="amount" name="amount">#}
-    {#            </div>#}
-    {#            <div class="form-group col-2">#}
-    {#                <label for="date">Date</label>#}
-    {#                <input type="date" class="form-control" id="date" name="date" value="{% now 'Y-m-d' %}">#}
-    {#            </div>#}
-    {#            <div class="form-group col-2">#}
-    {#                <label for="time">Time</label>#}
-    {#                <input type="time" class="form-control" id="time" name="time" value="14:00">#}
-    {#            </div>#}
-    {#        </div>#}
-    {#        <div class="form-group">#}
-    {#            <label for="note">Note <small>(optional)</small></label>#}
-    {#            <input type="text" class="form-control" id="note" name="note">#}
-    {#        </div>#}
-    {#        <div class="form-row">#}
-    {#            <div class="form-group col-12">#}
-    {#                <div v-for="tag in getSelectedTags()" class="form-check form-check-inline">#}
-    {#                    <input class="form-check-input" type="checkbox" :id="'checkbox-' + tag.id"#}
-    {#                           value="option1" name="">#}
-    {#                    <label class="form-check-label" :for="'checkbox-' + tag.id">[[ tag.name ]]</label>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#        <button class="btn btn-primary" type="submit">Add</button>#}
-    {#    </form>#}
     <div class="row">
         <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog">New Transaction</button>
         {% include "transactions/transaction-dialog.html" %}
@@ -64,16 +24,9 @@
                         <td>{{ transaction.category.name }}</td>
                         <td>{{ transaction.note }}</td>
                         <td>
-                            <form action="{% url 'transactions_delete' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="id" value="{{ transaction.id }}"/>
-                                <button class="btn btn-outline-danger fas fa-edit" type="submit"></button>
-                            </form>
-                            <form action="{% url 'transactions_delete' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="id" value="{{ transaction.id }}"/>
-                                <button class="btn btn-outline-danger fas fa-trash" type="submit"></button>
-                            </form>
+                            <button class="btn btn-outline-danger fas fa-edit"></button>
+                            <button class="btn btn-outline-danger fas fa-trash"
+                                    onclick="deleteTransaction({{ transaction.id }})"></button>
                         </td>
                     </tr>
                 {% endfor %}
@@ -81,21 +34,12 @@
             </table>
         </div>
     </div>
-
-    {#    <script>#}
-    {#        new Vue({#}
-    {#            el: "#transaction",#}
-    {#            delimiters: ["[[", "]]"],#}
-    {#            data: {#}
-    {#                tags: {{ tags | safe }},#}
-    {#                categories: {{ categories | safe }},#}
-    {#                selectedCategoryId: {{ selected_category_id }}#}
-    {#            },#}
-    {#            methods: {#}
-    {#                getSelectedTags: function () {#}
-    {#                    return this.tags.filter(tag => tag.category_id === this.selectedCategoryId);#}
-    {#                }#}
-    {#            }#}
-    {#        });#}
-    {#    </script>#}
+    <script>
+        function deleteTransaction(id) {
+            const request = new XMLHttpRequest();
+            request.open("POST", "delete/" + id);
+            request.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            request.send();
+        }
+    </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from transactions.views import TransactionView, TransactionDeleteView
+from transactions.views import TransactionView, delete_transaction
 
-urlpatterns = [path("", TransactionView.as_view(), name=TransactionView.name),
-               path("delete", TransactionDeleteView.as_view(), name=TransactionDeleteView.name)]
+urlpatterns = [path("", TransactionView.as_view(), name="transactions"),
+               path("delete/<int:transaction_id>", delete_transaction, name="transactions_delete")]
