@@ -8,7 +8,9 @@
                 New
             </button>
             <ul class="list-group">
-                <li v-for="category in categories" class="list-group-item">[[ category.name ]]</li>
+                {% for category in categories %}
+                    <li class="list-group-item">{{ category.name }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="col-10">
@@ -22,9 +24,7 @@
         new Vue({
             delimiters: ["[[", "]]"],
             el: "#categories",
-            data: {
-                categories: {{ categories | safe }}
-            },
+            data: {},
             methods: {
                 showDescription: function () {
                     return false;
