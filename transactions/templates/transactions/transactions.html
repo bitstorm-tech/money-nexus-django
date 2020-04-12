@@ -6,14 +6,26 @@
                 <div class="modal-content">
                     <form action="{% url 'transactions' %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="id" :value="transactionInDialog.id">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New Transaction</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                        <input type="text" hidden name="id" :value="transactionInDialog.id">
                         <div class="modal-body">
+                            <div class="from-row my-2">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="incoming" name="outgoing"
+                                           class="custom-control-input"
+                                           value="false" :checked="!transactionInDialog.outgoing">
+                                    <label class="custom-control-label" for="incoming">Incoming</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="outgoing" name="outgoing"
+                                           class="custom-control-input" value="true"
+                                           :checked="transactionInDialog.outgoing">
+                                    <label class="custom-control-label" for="outgoing">Outgoing</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="tax-relevant">
+                                    <label class="custom-control-label" for="tax-relevant">Tax relevant</label>
+                                </div>
+                            </div>
                             <div class="form-row">
                                 <div class="form-group col-4">
                                     <label for="amount">Amount</label>
@@ -34,11 +46,10 @@
                             <div class="form-group">
                                 <label for="category">Category</label>
                                 <select id="category" class="form-control" name="category">
-                                    {% for category in categories %}
-                                        <option value="{{ category.id }}">
-                                            {{ category.name }}
-                                        </option>
-                                    {% endfor %}
+                                    <option v-for="category in categories" :value="category.id"
+                                            :selected="transactionInDialog.category_id === category.id">
+                                        [[category.name]]
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -58,7 +69,7 @@
         <div class="row">
             <div class="col-12">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog"
-                        @click="setNewTransactionInDialog()">
+                        @click="setTransactionInDialog(-1)">
                     New Transaction
                 </button>
             </div>
@@ -69,27 +80,31 @@
                     <thead>
                     <tr>
                         <th scope="col">Date</th>
+                        <th scope="col">Direction</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Category</th>
                         <th scope="col">Note</th>
+                        <th scope="col">Tax relevant</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for transaction in all_transactions %}
+                    {% for transaction in transactions %}
                         <tr>
                             <td>{{ transaction.date | date:'d.m.Y' }} - {{ transaction.time | date:'H:i' }}</td>
+                            {% if transaction.outgoing %}
+                                <td><span class="badge badge-pill badge-danger">Outgoing</span></td>
+                            {% else %}
+                                <td><span class="badge badge-pill badge-success">Incoming</span></td>
+                            {% endif %}
                             <td>{{ transaction.amount }}</td>
                             <td>{{ transaction.category.name }}</td>
                             <td>{{ transaction.note }}</td>
+                            <td><i class="fas fa-check"></i></td>
                             <td>
                                 <a class="fas fa-edit mr-2" href="#" data-toggle="modal"
-                                        data-target="#transaction-dialog"
-                                        @click="setTransactionInDialog({{ transaction.id }},
-                                                                           {{ transaction.amount }},
-                                                                           '{{ transaction.date | date:'Y-m-d' }}',
-                                                                           '{{ transaction.time | date:'H:i' }}',
-                                                                           '{{ transaction.note }}')">
+                                   data-target="#transaction-dialog"
+                                   @click="setTransactionInDialog({{ transaction.id }})">
                                 </a>
                                 <form action="{% url 'transactions_delete' %}" method="post">
                                     {% csrf_token %}
@@ -109,19 +124,27 @@
             el: "#transactions",
             delimiters: ["[[", "]]"],
             data: {
+                transactionIdInDialog: -1,
+                transactions: {{ transactions_json | safe }},
+                categories: {{ categories_json | safe }},
                 transactionInDialog: {}
             },
             methods: {
-                setTransactionInDialog: function (id, amount, date, time, note) {
-                    this.transactionInDialog = {id, amount, date, time, note};
+                setTransactionInDialog: function (transactionId) {
+                    if (transactionId >= 0) {
+                        this.transactionInDialog = this.transactions.find(transaction => transaction.id === transactionId)
+                    } else {
+                        this.transactionInDialog = this.createNewTransaction()
+                    }
                 },
-                setNewTransactionInDialog: function () {
-                    this.transactionInDialog = {
+                createNewTransaction: function () {
+                    return {
                         id: -1,
                         amount: 1,
                         date: new Date().toISOString().substring(0, 10),
                         time: new Date().toISOString().substring(11, 16),
-                        note: ""
+                        note: "",
+                        outgoing: true
                     }
                 }
             }
