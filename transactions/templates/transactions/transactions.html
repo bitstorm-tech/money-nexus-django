@@ -103,7 +103,7 @@
                                 <form action="{% url 'transactions_delete' %}" method="post">
                                     {% csrf_token %}
                                     <input hidden name="id" value="{{ transaction.id }}">
-                                    <a class="fas fa-trash-alt" href="#" type="submit"></a>
+                                    <a class="fas fa-trash-alt" href="#" onclick="this.parentNode.submit()"></a>
                                 </form>
                             </td>
                         </tr>

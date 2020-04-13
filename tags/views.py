@@ -24,5 +24,5 @@ class TagsView(View):
 
 
 def delete_tag(request: HttpRequest):
-    Tag.objects.filter(request.POST["id"]).delete()
+    Tag.objects.filter(id=request.POST["id"]).delete()
     return redirect("/tags")
