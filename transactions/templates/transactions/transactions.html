@@ -96,14 +96,14 @@
                             <td>{{ transaction.note }}</td>
                             <td><i class="fas fa-check"></i></td>
                             <td>
-                                <a class="fas fa-edit mr-2" href="#" data-toggle="modal"
+                                <button class="btn btn-link fas fa-edit" data-toggle="modal"
                                    data-target="#transaction-dialog"
                                    @click="setTransactionInDialog({{ transaction.id }})">
-                                </a>
+                                </button>
                                 <form action="{% url 'transactions_delete' %}" method="post">
                                     {% csrf_token %}
                                     <input hidden name="id" value="{{ transaction.id }}">
-                                    <a class="fas fa-trash-alt" href="#" onclick="this.parentNode.submit()"></a>
+                                    <button class="btn btn-link fas fa-trash-alt" type="submit"></button>
                                 </form>
                             </td>
                         </tr>
