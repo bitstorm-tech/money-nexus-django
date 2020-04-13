@@ -6,7 +6,8 @@
                 <div class="modal-content">
                     <form action="{% url 'transactions' %}" method="post">
                         {% csrf_token %}
-                        <input type="text" hidden name="id" :value="transactionInDialog.id">
+                        <input v-if="transactionInDialog.id" type="text" hidden name="id"
+                               :value="transactionInDialog.id">
                         <div class="modal-body">
                             <div class="from-row my-2">
                                 <div class="custom-control custom-radio custom-control-inline">
@@ -44,15 +45,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="category">Category</label>
-                                <select id="category" class="form-control" name="category">
-                                    <option v-for="category in categories" :value="category.id"
-                                            :selected="transactionInDialog.category_id === category.id">
-                                        [[category.name]]
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
                                 <label for="note">Note <small>(optional)</small></label>
                                 <input type="text" class="form-control" id="note" name="note"
                                        :value="transactionInDialog.note">
@@ -69,7 +61,7 @@
         <div class="row">
             <div class="col-12">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog"
-                        @click="setTransactionInDialog(-1)">
+                        @click="setTransactionInDialog()">
                     New Transaction
                 </button>
             </div>
@@ -82,7 +74,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Direction</th>
                         <th scope="col">Amount</th>
-                        <th scope="col">Category</th>
+                        <th scope="col">Tags</th>
                         <th scope="col">Note</th>
                         <th scope="col">Tax relevant</th>
                         <th scope="col">Actions</th>
@@ -98,7 +90,11 @@
                                 <td><span class="badge badge-pill badge-success">Incoming</span></td>
                             {% endif %}
                             <td>{{ transaction.amount }}</td>
-                            <td>{{ transaction.category.name }}</td>
+                            <td>
+                                <a href="#" class="badge badge-secondary">Tag1</a>
+                                <a href="#" class="badge badge-secondary">Tag2</a>
+                                <a href="#" class="badge badge-secondary">Tag3</a>
+                            </td>
                             <td>{{ transaction.note }}</td>
                             <td><i class="fas fa-check"></i></td>
                             <td>
@@ -124,14 +120,13 @@
             el: "#transactions",
             delimiters: ["[[", "]]"],
             data: {
-                transactionIdInDialog: -1,
+                transactionIdInDialog: null,
                 transactions: {{ transactions_json | safe }},
-                categories: {{ categories_json | safe }},
                 transactionInDialog: {}
             },
             methods: {
                 setTransactionInDialog: function (transactionId) {
-                    if (transactionId >= 0) {
+                    if (transactionId) {
                         this.transactionInDialog = this.transactions.find(transaction => transaction.id === transactionId)
                     } else {
                         this.transactionInDialog = this.createNewTransaction()
@@ -139,7 +134,7 @@
                 },
                 createNewTransaction: function () {
                     return {
-                        id: -1,
+                        id: undefined,
                         amount: 1,
                         date: new Date().toISOString().substring(0, 10),
                         time: new Date().toISOString().substring(11, 16),

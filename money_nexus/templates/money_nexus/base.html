@@ -34,10 +34,6 @@
                href="{% url "transactions" %}">
                 <i class="fas fa-exchange-alt"></i> Transactions
             </a>
-            <a class="btn {% if active == "categories" %}btn-primary{% else %}btn-secondary{% endif %}"
-               href="{% url "categories" %}">
-                <i class="fas fa-list"></i> Categories
-            </a>
             <a class="btn {% if active == "tags" %}btn-primary{% else %}btn-secondary{% endif %}"
                href="{% url "tags" %}">
                 <i class="fas fa-tags"></i> Tags

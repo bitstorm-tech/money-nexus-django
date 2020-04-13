@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "money_nexus",
     "tags",
     "transactions",
-    "categories",
 ]
 
 MIDDLEWARE = [
