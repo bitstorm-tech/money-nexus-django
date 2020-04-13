@@ -61,9 +61,7 @@
         <div class="row">
             <div class="col-12">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#transaction-dialog"
-                        @click="setTransactionInDialog()">
-                    New Transaction
-                </button>
+                        @click="setTransactionInDialog()"><i class="fas fa-plus"></i></button>
             </div>
         </div>
         <div class="row mt-3">
@@ -105,7 +103,7 @@
                                 <form action="{% url 'transactions_delete' %}" method="post">
                                     {% csrf_token %}
                                     <input hidden name="id" value="{{ transaction.id }}">
-                                    <a class="fas fa-trash" href="#" type="submit"></a>
+                                    <a class="fas fa-trash-alt" href="#" type="submit"></a>
                                 </form>
                             </td>
                         </tr>
@@ -120,7 +118,6 @@
             el: "#transactions",
             delimiters: ["[[", "]]"],
             data: {
-                transactionIdInDialog: null,
                 transactions: {{ transactions_json | safe }},
                 transactionInDialog: {}
             },

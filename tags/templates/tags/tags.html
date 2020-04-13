@@ -1,27 +1,100 @@
 {% extends "money_nexus/base.html" %}
 {% block content %}
-    <h1>New Tag</h1>
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-row">
-            <div class="form-group col-6">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ name }}">
+    <div id="tags">
+        <div class="modal fade" id="tag-dialog" tabindex="-1" role="dialog" data-backdrop="static">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="{% url 'tags' %}" method="post">
+                        {% csrf_token %}
+                        <input v-if="tagInDialog.id" type="text" hidden name="id"
+                               :value="tagInDialog.id">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                       :value="tagInDialog.name">
+                            </div>
+                            <div class="form-group">
+                                <label for="note">Description <small>(optional)</small></label>
+                                <textarea class="form-control" id="description" name="description"
+                                          :value="tagInDialog.description"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="description">Description <small>(optional)</small></label>
-            <textarea name="description" id="description" class="form-control" rows="5">{{ description }}</textarea>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#tag-dialog"
+                        @click="setTagInDialog()"><i class="fas fa-plus"></i></button>
+            </div>
         </div>
-        <button class="btn btn-primary" type="submit">Save</button>
-    </form>
-    <br>
-    <h2>Available Tags</h2>
-    <ul>
-        {% for tag in tags %}
-            <li>
-                <a href="?name={{ tag.name }}&description={{ tag.description }}">{{ tag.name }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+        <div class="row mt-3">
+            <div class="col-12">
+                <table class="table table-dark table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="tag in tags">
+                        <td>[[ tag.name ]]</td>
+                        <td>[[ tag.description ]]</td>
+                        <td>
+                            <a class="fas fa-edit mr-2" href="#" data-toggle="modal"
+                               data-target="#tag-dialog"
+                               @click="setTagInDialog(tag.id)">
+                            </a>
+                            <form action="{% url 'tags_delete' %}" method="post">
+                                {% csrf_token %}
+                                <input hidden name="id" :value="tag.id">
+                                <a class="fas fa-trash-alt" href="#" type="submit"></a>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#tags",
+            delimiters: ["[[", "]]"],
+            data: {
+                tagIdInDialog: null,
+                tags: {{ tags | safe }},
+                tagInDialog: {}
+            },
+            methods: {
+                setTagInDialog: function (tagId) {
+                    if (tagId) {
+                        this.tagInDialog = this.tags.find(tag => tag.id === tagId)
+                    } else {
+                        this.tagInDialog = this.createNewTag()
+                    }
+                },
+                createNewTag: function () {
+                    return {
+                        id: undefined,
+                        name: "",
+                        description: ""
+                    }
+                }
+            }
+        });
+    </script>
+    <style>
+        td > form {
+            display: inline;
+        }
+    </style>
 {% endblock %}

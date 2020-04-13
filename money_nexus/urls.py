@@ -17,11 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 from money_nexus.views import home
-from tags.views import tags
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("transactions/", include("transactions.urls")),
-    path("tags/", tags, name="tags"),
+    path("tags/", include("tags.urls")),
     path("", home, name="home"),
 ]

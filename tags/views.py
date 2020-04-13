@@ -1,24 +1,28 @@
 from django.http import HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views import View
 
+from money_nexus.json_utils import to_json
 from tags.models import Tag
 
 
-def tags(request: HttpRequest):
-    all_tags = Tag.objects.all().order_by("name")
-    context = {"tags": all_tags, "active": "tags"}
+class TagsView(View):
+    def get(self, request: HttpRequest):
+        tags = Tag.objects.all().order_by("name")
+        context = {"tags": to_json(tags), "active": "tags"}
+        return render(request, "tags/tags.html", context)
 
-    if request.method == "POST":
-        save_tag(request.POST)
-    elif request.method == "GET":
-        context["name"] = request.GET.get("name", "")
-        context["description"] = request.GET.get("description", "")
+    def post(self, request: HttpRequest):
+        tag = Tag.from_post_data(request.POST)
+        if tag.id:
+            Tag.objects.filter(id=tag.id).update(
+                name=tag.name, description=tag.description
+            )
+        else:
+            tag.save()
+        return redirect("/tags")
 
-    return render(request, "tags/tags.html", context)
 
-
-def save_tag(post_data):
-    name = post_data["name"]
-    description = post_data["description"]
-    tag = Tag(name=name, description=description)
-    tag.save()
+def delete_tag(request: HttpRequest):
+    Tag.objects.filter(request.POST["id"]).delete()
+    return redirect("/tags")
