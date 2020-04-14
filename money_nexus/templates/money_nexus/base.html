@@ -38,6 +38,10 @@
                href="{% url "tags" %}">
                 <i class="fas fa-tags"></i> Tags
             </a>
+            <a class="btn {% if active == "accounts" %}btn-primary{% else %}btn-secondary{% endif %}"
+               href="#">
+                <i class="fas fa-money-check-alt"></i> Accounts
+            </a>
             <a class="btn {% if active == "statistics" %}btn-primary{% else %}btn-secondary{% endif %}"
                href="#">
                 <i class="fas fa-chart-pie"></i> Statistics
