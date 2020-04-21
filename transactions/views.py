@@ -12,18 +12,17 @@ class TransactionView(View):
 
     def get(self, request: HttpRequest):
         tags = Tag.objects.all().order_by("name")
-        all_transactions = Transaction.objects.all().order_by("date").order_by("time")
+        transactions = Transaction.objects.all().order_by("date").order_by("time")
         context = {
-            "tags": list(tags.values()),
             "active": "transactions",
-            "transactions": list(all_transactions),
-            "transactions_json": to_json(all_transactions),
+            "tags_json": to_json(tags),
+            "transactions": list(transactions),
+            "transactions_json": to_json(transactions),
         }
         return render(request, "transactions/transactions.html", context)
 
     def post(self, request: HttpRequest):
-        post_data = request.POST
-        transaction = Transaction.from_post_data(post_data)
+        transaction = Transaction.from_post_data(request.POST)
         if transaction.id:
             Transaction.objects.filter(id=transaction.id).update(
                 amount=transaction.amount,

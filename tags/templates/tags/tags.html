@@ -49,14 +49,14 @@
                         <td>[[ tag.name ]]</td>
                         <td>[[ tag.description ]]</td>
                         <td>
-                            <button class="btn btn-link fas fa-edit" data-toggle="modal"
+                            <button class="btn btn-link btn-sm fas fa-edit" data-toggle="modal"
                                data-target="#tag-dialog"
                                @click="setTagInDialog(tag.id)">
                             </button>
                             <form action="{% url 'tags_delete' %}" method="post">
                                 {% csrf_token %}
                                 <input hidden name="id" :value="tag.id">
-                                <button class="btn btn-link fas fa-trash-alt" type="submit"></button>
+                                <button class="btn btn-link btn-sm fas fa-trash-alt" type="submit"></button>
                             </form>
                         </td>
                     </tr>
