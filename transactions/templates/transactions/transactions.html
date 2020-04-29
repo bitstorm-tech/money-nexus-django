@@ -52,9 +52,11 @@
                             <span>Tags</span>
                             <div class="form-row mt-2">
                                 <div v-for="tag in tags" class="custom-control custom-checkbox mx-2">
-                                    <input type="checkbox" class="custom-control-input" :id="'tag-' + tag.id"
-                                           :checked="true">
-                                    <label class="custom-control-label" :for="'tag-' + tag.id">[[ tag.name ]]</label>
+                                    <input type="checkbox" class="custom-control-input" id="tagId(tag)"
+                                           :value="tag.id">
+                                    <label class="custom-control-label" :for="tagId(tag)">
+                                        [[ tag.name ]]
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -125,10 +127,12 @@
         new Vue({
             el: "#transactions",
             delimiters: ["[[", "]]"],
-            data: {
-                transactions: {{ transactions_json | safe }},
-                tags: {{ tags_json | safe }},
-                transactionInDialog: {}
+            data() {
+                return {
+                    transactions: {{ transactions_json | safe }},
+                    tags: {{ tags_json | safe }},
+                    transactionInDialog: {}
+                }
             },
             methods: {
                 setTransactionInDialog: function (transactionId) {
@@ -147,6 +151,9 @@
                         note: "",
                         outgoing: true
                     }
+                },
+                tagId: function (tag) {
+                    return `tag-${tag.id}`
                 }
             }
         });
