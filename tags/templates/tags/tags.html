@@ -50,8 +50,8 @@
                         <td>[[ tag.description ]]</td>
                         <td>
                             <button class="btn btn-link btn-sm fas fa-edit" data-toggle="modal"
-                               data-target="#tag-dialog"
-                               @click="setTagInDialog(tag.id)">
+                                    data-target="#tag-dialog"
+                                    @click="setTagInDialog(tag.id)">
                             </button>
                             <form action="{% url 'tags_delete' %}" method="post">
                                 {% csrf_token %}
@@ -69,10 +69,12 @@
         new Vue({
             el: "#tags",
             delimiters: ["[[", "]]"],
-            data: {
-                tagIdInDialog: null,
-                tags: {{ tags | safe }},
-                tagInDialog: {}
+            data() {
+                return {
+                    tagIdInDialog: null,
+                    tags: {{ tags | safe }},
+                    tagInDialog: {}
+                }
             },
             methods: {
                 setTagInDialog: function (tagId) {
