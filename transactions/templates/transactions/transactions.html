@@ -51,12 +51,10 @@
                             </div>
                             <span>Tags</span>
                             <div class="form-row mt-2">
-                                <div v-for="tag in tags" class="custom-control custom-checkbox mx-2">
-                                    <input type="checkbox" class="custom-control-input" id="tagId(tag)"
-                                           :value="tag.id">
-                                    <label class="custom-control-label" :for="tagId(tag)">
-                                        [[ tag.name ]]
-                                    </label>
+                                <div v-for="tag in tags" class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" :id="id(tag)" name="tags[]"
+                                           :value="tag.id" :checked="hasTag(transactionInDialog, tag)">
+                                    <label class="custom-control-label" :for="id(tag)">[[ tag.name ]]</label>
                                 </div>
                             </div>
                         </div>
@@ -135,14 +133,14 @@
                 }
             },
             methods: {
-                setTransactionInDialog: function (transactionId) {
+                setTransactionInDialog(transactionId) {
                     if (transactionId) {
                         this.transactionInDialog = this.transactions.find(transaction => transaction.id === transactionId)
                     } else {
                         this.transactionInDialog = this.createNewTransaction()
                     }
                 },
-                createNewTransaction: function () {
+                createNewTransaction() {
                     return {
                         id: undefined,
                         amount: 1,
@@ -152,8 +150,12 @@
                         outgoing: true
                     }
                 },
-                tagId: function (tag) {
+                id(tag) {
                     return `tag-${tag.id}`
+                },
+                hasTag(transaction, tag) {
+                    const tagIds = transaction.tags
+                    return tagIds && tagIds.some(id => id === tag.id)
                 }
             }
         });
