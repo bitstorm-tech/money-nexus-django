@@ -26,8 +26,9 @@
         background-attachment: fixed;
         background-size: cover;
     }
+
     .navbar {
-        background-color: rgba(.7, .7, .7, .6)!important;
+        background-color: rgba(.7, .7, .7, .6) !important;
     }
 </style>
 
@@ -50,9 +51,9 @@
                href="{% url "tags" %}">
                 <i class="fas fa-tags"></i> Tags
             </a>
-            <a class="btn {% if active == "accounts" %}btn-primary{% else %}btn-secondary{% endif %}"
-               href="#">
-                <i class="fas fa-money-check-alt"></i> Accounts
+            <a class="btn {% if active == "bank_accounts" %}btn-primary{% else %}btn-secondary{% endif %}"
+               href="{% url "bank_accounts" %}">
+                <i class="fas fa-money-check-alt"></i> Bank Accounts
             </a>
             <a class="btn {% if active == "statistics" %}btn-primary{% else %}btn-secondary{% endif %}"
                href="#">

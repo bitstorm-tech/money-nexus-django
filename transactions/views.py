@@ -31,7 +31,7 @@ class TransactionView(View):
                 time=transaction.time,
                 note=transaction.note,
                 outgoing=transaction.outgoing,
-                tax_relevant=transaction.tax_relevant
+                tax_relevant=transaction.tax_relevant,
             )
         else:
             transaction.save()
