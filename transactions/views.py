@@ -22,6 +22,7 @@ class TransactionView(View):
         return render(request, "transactions/transactions.html", context)
 
     def post(self, request: HttpRequest):
+        print(f"POST Transaction: {request.POST}")
         transaction = Transaction.from_post_data(request.POST)
         if transaction.id:
             Transaction.objects.filter(id=transaction.id).update(
@@ -30,6 +31,7 @@ class TransactionView(View):
                 time=transaction.time,
                 note=transaction.note,
                 outgoing=transaction.outgoing,
+                tax_relevant=transaction.tax_relevant
             )
         else:
             transaction.save()

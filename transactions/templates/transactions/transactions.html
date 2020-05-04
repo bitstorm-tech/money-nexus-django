@@ -23,7 +23,9 @@
                                     <label class="custom-control-label" for="outgoing">Outgoing</label>
                                 </div>
                                 <div class="custom-control custom-checkbox custom-control-inline">
-                                    <input type="checkbox" class="custom-control-input" id="tax-relevant">
+                                    <input type="checkbox" class="custom-control-input" id="tax-relevant"
+                                           name="tax-relevant"
+                                           :checked="transactionInDialog.tax_relevant">
                                     <label class="custom-control-label" for="tax-relevant">Tax relevant</label>
                                 </div>
                             </div>
@@ -102,7 +104,7 @@
                                 <a href="#" class="badge badge-secondary">Tag3</a>
                             </td>
                             <td>{{ transaction.note }}</td>
-                            <td><i class="fas fa-check"></i></td>
+                            <td>{% if transaction.tax_relevant %}<i class="fas fa-check"></i> {% endif %}</td>
                             <td>
                                 <button class="btn btn-link btn-sm fas fa-edit" data-toggle="modal"
                                         data-target="#transaction-dialog"
@@ -147,7 +149,8 @@
                         date: new Date().toISOString().substring(0, 10),
                         time: new Date().toISOString().substring(11, 16),
                         note: "",
-                        outgoing: true
+                        outgoing: true,
+                        tax_relevant: false,
                     }
                 },
                 id(tag) {

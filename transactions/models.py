@@ -24,6 +24,7 @@ class Transaction(models.Model):
         transaction.amount = post_data["amount"]
         transaction.note = post_data["note"]
         transaction.outgoing = True if post_data["outgoing"] == "true" else False
+        transaction.tax_relevant = "tax-relevant" in post_data
         tag_ids = post_data.getlist("tags[]", [])
         transaction.tags.set(tag_ids)
 
